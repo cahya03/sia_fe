@@ -15,6 +15,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Arsip from './pages/Arsip';
 import ArsipUpload from './pages/ArsipUpload';
+import ArsipPreview from './pages/ArsipPreview';
 
 function App() {
 
@@ -34,6 +35,7 @@ function App() {
         <Route exact path="/register" element={<Register />}/>
         <Route exact path="/arsip" element={<Arsip />}/>
         <Route exact path="/arsip/unggah" element={<ArsipUpload />}/>
+        <Route exact path="/arsip/preview" element={<ArsipPreview />}/>
         <Route path="*" element={<h1>404</h1>} />
       </Routes>
     </>

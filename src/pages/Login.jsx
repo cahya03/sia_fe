@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -70,12 +71,23 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/api/login', credentials); // Replace with your API endpoint
-      // Handle successful login (e.g., set user token in localStorage)
+      const response = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/login`,
+        credentials,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+        }
+      );
+      alert('Login Berhasil')
       console.log(response.data);
-      navigate('/');
+      localStorage.setItem('token',response.jwt)
+      navigate("/");
     } catch (error) {
       // Handle login error (e.g., show error message)
+      alert(error);
       console.error(error);
     }
   };
@@ -132,7 +144,9 @@ const Login = () => {
             Log In
           </button>
           <br />
-          <a className="font-medium text-xs" href="/register">Don't have an account? Register</a>
+          <a className="font-medium text-xs" href="/register">
+            Don't have an account? Register
+          </a>
         </form>
       </div>
     </div>

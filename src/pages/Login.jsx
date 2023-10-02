@@ -5,57 +5,8 @@ axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 const Login = () => {
   const navigate = useNavigate();
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   const data = new FormData(e.currentTarget);
-
-  //   const email = data.get("email");
-  //   const password = data.get("password");
-  //   axios
-  //     .post(`${process.env.BACKEND_URL}/login`, {
-  //       email: email,
-  //       password: password,
-  //     })
-  //     .then(function (response) {
-  //       if (
-  //         response.data == `Password Salah` ||
-  //         response.data == "Email Tidak Valid"
-  //       ) {
-  //         document.getElementById("alertobj").style.backgroundColor = "#790252"
-  //       } else{
-  //         localStorage.setItem('user', response.data.username)
-  //         localStorage.setItem('id', response.data.id)
-  //         localStorage.setItem('email', response.data.email)
-  //         localStorage.setItem('token', response.data.token)
-  //         navigate('/')
-  //       }
-  //     })
-  //     .catch(function(error){
-  //       document.getElementById("alertobj").style.backgroundColor = "#790252"
-  //       console.log(error);
-  //     });
-  // };
-
-  // const [email, SetEmail] = useState("");
-  // const [password, setPassword] = useState("");
-
-  // const handleSubmit = async (event) => {
-  //   event.preventDefault();
-  //   const response = await axios.post("/api/login", {
-  //     email,
-  //     password,
-  //   });
-
-  //   if (response.status === 200) {
-  //     localStorage.setItem("user", response.data.username);
-  //     localStorage.setItem("id", response.data.id);
-  //     localStorage.setItem("email", response.data.email);
-  //     localStorage.setItem("token", response.data.token);
-  //     navigate("/");
-  //   } else {
-
-  //   }
-  // };
+  // const [jwtToken, setJwtToken] = useState('');
+  // const [timestamp, setTimestamp] = useState('');
   const [credentials, setCredentials] = useState({
     email: "",
     password: "",
@@ -81,9 +32,14 @@ const Login = () => {
           },
         }
       );
+      const {token, refreshToken} = response.data;
+    
+      localStorage.setItem('token',token);
+      localStorage.setItem('refreshToken', refreshToken);
+      // setJwtToken(response.token);
+      // setTimestamp(new Date().toString());
       alert('Login Berhasil')
       console.log(response.data);
-      localStorage.setItem('token',response.jwt)
       navigate("/");
     } catch (error) {
       // Handle login error (e.g., show error message)

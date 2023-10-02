@@ -1,14 +1,23 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 const UpperButton = () => {
+  const location = useLocation();
+  const { pathname } = location;
   return (
     <div className="sm:flex sm:justify-between sm:items-center mb-8">
       {/* Right: Actions */}
       <div className="grid grid-flow-col sm:auto-cols-max justify-start sm:justify-end gap-2">
         {/* Tampil button */}
-        <Link to="/arsip">
-          <button className="btn bg-indigo-500 hover:bg-indigo-600 text-white">
+        <Link to="/arsip/tampil">
+          <button
+            className={`btn bg-indigo-500 hover:bg-indigo-600 text-white ${
+              pathname === "/arsip/tampil" || pathname.includes("arsip/tampil")
+                ? "bg-blue-800"
+                : ""
+            }`}
+          >
             <svg
               className="w-6 h-6 fill-current opacity-50 shrink-0"
               viewBox="0 0 24 24"
@@ -21,7 +30,13 @@ const UpperButton = () => {
 
         {/* Unggah button */}
         <Link to="/arsip/unggah">
-          <button className="btn bg-indigo-500 hover:bg-indigo-600 text-white">
+          <button
+            className={`btn bg-indigo-500 hover:bg-indigo-600 text-white ${
+              pathname === "/arsip/unggah" || pathname.includes("unggah")
+                ? "bg-blue-800"
+                : ""
+            }`}
+          >
             <svg
               className="w-6 h-6 fill-current opacity-50 shrink-0"
               viewBox="0 0 24 24"

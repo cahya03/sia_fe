@@ -159,19 +159,19 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                   </div>
                 </NavLink>
               </li>
-              {/* Arsip */}
+              {/* Explore */}
               <li
                 className={`px-3 py-2 rounded-sm mb-0.5 last:mb-0 ${
-                  pathname === "/arsip" || pathname.includes("arsip")
+                  pathname === "/explore" || pathname.includes("explore")
                     ? "bg-slate-900"
                     : ""
                 }`}
               >
                 <NavLink
                   end
-                  to="/arsip"
+                  to="/explore"
                   className={`block text-slate-200 truncate transition duration-150 ${
-                    pathname === "/arsip" || pathname.includes("arsip")
+                    pathname === "/explore" || pathname.includes("explore")
                       ? "hover:text-slate-200"
                       : "hover:text-white"
                   }`}
@@ -180,23 +180,23 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                     <svg className="shrink-0 h-6 w-6" viewBox="0 0 24 24">
                       <path
                         className={`fill-current ${
-                          pathname === "/arsip" || pathname.includes("arsip")
+                          pathname === "/explore" || pathname.includes("explore")
                             ? "text-indigo-500"
                             : "text-slate-400"
                         }`}
-                        d="M8.022 5h7.955l.333 1h-8.621l.333-1zm-1 3h9.955l-.333-1h-9.289l-.333 1zm.419-6h9.117l2.667 8h2.107l-3.332-10h-12l-3.333 10h2.107l2.667-8zm1.248 1l-.333 1h7.288l-.334-1h-6.621zm15.311 9l-2 12h-20l-2-12h24zm-9 3h-6v2h6v-2zm-8.645-5h11.289l-.333-1h-10.623l-.333 1z"
+                        d="M10.538 7.674c-.292.129-.519.291-.714.477l-.646-.161c.259-.293.593-.552 1.015-.746.432-.194.886-.292 1.351-.332l-.098.51c-.313.041-.616.121-.908.252zm1.458.444c1.025 0 1.847.616 1.847 1.378 0 .77-.821 1.385-1.847 1.385-1.015 0-1.847-.616-1.847-1.385 0-.762.832-1.378 1.847-1.378zm-.826 1.379c0 .35.369.626.826.626.467 0 .837-.277.837-.626 0-.343-.37-.62-.837-.62-.457 0-.826.277-.826.62zm-1.313-2.674c.562-.251 1.178-.389 1.793-.421l.098-.495c-.767.017-1.534.179-2.236.495-.702.315-1.242.753-1.62 1.247l.638.169c.313-.396.766-.736 1.327-.995zm9.643 12.177c.276 0 .5-.224.5-.5s-.224-.5-.5-.5-.5.224-.5.5.224.5.5.5zm-.5-17h-14l-5 14v6h24v-6l-5-14zm-7.004 3c3.315 0 6.006 2.017 6.006 4.497 0 2.487-2.69 4.503-6.006 4.503s-5.994-2.017-5.994-4.503c0-2.48 2.679-4.497 5.994-4.497zm10.004 15h-13v-1.5c0-.276-.224-.5-.5-.5s-.5.224-.5.5v1.5h-1v-1.5c0-.276-.224-.5-.5-.5s-.5.224-.5.5v1.5h-1v-1.5c0-.276-.224-.5-.5-.5s-.5.224-.5.5v1.5h-2v-3h20v3z"
                       />
                       <path
                         className={`fill-current ${
-                          pathname === "/arsip" || pathname.includes("arsip")
+                          pathname === "/explore" || pathname.includes("explore")
                             ? "text-indigo-600"
                             : "text-slate-600"
                         }`}
-                        d="M8.022 5h7.955l.333 1h-8.621l.333-1zm-1 3h9.955l-.333-1h-9.289l-.333 1zm.419-6h9.117l2.667 8h2.107l-3.332-10h-12l-3.333 10h2.107l2.667-8zm1.248 1l-.333 1h7.288l-.334-1h-6.621zm15.311 9l-2 12h-20l-2-12h24zm-9 3h-6v2h6v-2zm-8.645-5h11.289l-.333-1h-10.623l-.333 1z"
+                        d="M10.538 7.674c-.292.129-.519.291-.714.477l-.646-.161c.259-.293.593-.552 1.015-.746.432-.194.886-.292 1.351-.332l-.098.51c-.313.041-.616.121-.908.252zm1.458.444c1.025 0 1.847.616 1.847 1.378 0 .77-.821 1.385-1.847 1.385-1.015 0-1.847-.616-1.847-1.385 0-.762.832-1.378 1.847-1.378zm-.826 1.379c0 .35.369.626.826.626.467 0 .837-.277.837-.626 0-.343-.37-.62-.837-.62-.457 0-.826.277-.826.62zm-1.313-2.674c.562-.251 1.178-.389 1.793-.421l.098-.495c-.767.017-1.534.179-2.236.495-.702.315-1.242.753-1.62 1.247l.638.169c.313-.396.766-.736 1.327-.995zm9.643 12.177c.276 0 .5-.224.5-.5s-.224-.5-.5-.5-.5.224-.5.5.224.5.5.5zm-.5-17h-14l-5 14v6h24v-6l-5-14zm-7.004 3c3.315 0 6.006 2.017 6.006 4.497 0 2.487-2.69 4.503-6.006 4.503s-5.994-2.017-5.994-4.503c0-2.48 2.679-4.497 5.994-4.497zm10.004 15h-13v-1.5c0-.276-.224-.5-.5-.5s-.5.224-.5.5v1.5h-1v-1.5c0-.276-.224-.5-.5-.5s-.5.224-.5.5v1.5h-1v-1.5c0-.276-.224-.5-.5-.5s-.5.224-.5.5v1.5h-2v-3h20v3z"
                       />
                       <path
                         className={`fill-current ${
-                          pathname === "/arsip" || pathname.includes("arsip")
+                          pathname === "/explore" || pathname.includes("explore")
                             ? "text-indigo-200"
                             : "text-slate-400"
                         }`}
@@ -204,7 +204,57 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                       />
                     </svg>
                     <span className="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                      Arsip
+                      Explore
+                    </span>
+                  </div>
+                </NavLink>
+              </li>
+              {/* Aplikasi */}
+              <li
+                className={`px-3 py-2 rounded-sm mb-0.5 last:mb-0 ${
+                  pathname === "/aplikasi" || pathname.includes("aplikasi")
+                    ? "bg-slate-900"
+                    : ""
+                }`}
+              >
+                <NavLink
+                  end
+                  to="/aplikasi"
+                  className={`block text-slate-200 truncate transition duration-150 ${
+                    pathname === "/aplikasi" || pathname.includes("aplikasi")
+                      ? "hover:text-slate-200"
+                      : "hover:text-white"
+                  }`}
+                >
+                  <div className="flex items-center">
+                    <svg className="shrink-0 h-6 w-6" viewBox="0 0 24 24">
+                      <path
+                        className={`fill-current ${
+                          pathname === "/aplikasi" || pathname.includes("aplikasi")
+                            ? "text-indigo-500"
+                            : "text-slate-400"
+                        }`}
+                        d="M22 6v16h-20v-16h20zm2-6h-24v24h24v-24zm-12.879 14l-4.707-4.707-1.414 1.414 3.293 3.293-3.293 3.293 1.414 1.414 4.707-4.707zm7.879 3h-7v2h7v-2z"
+                      />
+                      <path
+                        className={`fill-current ${
+                          pathname === "/aplikasi" || pathname.includes("aplikasi")
+                            ? "text-indigo-600"
+                            : "text-slate-600"
+                        }`}
+                        d="M22 6v16h-20v-16h20zm2-6h-24v24h24v-24zm-12.879 14l-4.707-4.707-1.414 1.414 3.293 3.293-3.293 3.293 1.414 1.414 4.707-4.707zm7.879 3h-7v2h7v-2z"
+                      />
+                      <path
+                        className={`fill-current ${
+                          pathname === "/aplikasi" || pathname.includes("aplikasi")
+                            ? "text-indigo-200"
+                            : "text-slate-400"
+                        }`}
+                        d=" 1z"
+                      />
+                    </svg>
+                    <span className="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                      Aplikasi
                     </span>
                   </div>
                 </NavLink>
@@ -234,17 +284,28 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                       >
                         <div className="flex items-center justify-between">
                           <div className="flex items-center">
-                          <svg className="shrink-0 h-6 w-6" viewBox="0 0 24 24">
+                            <svg
+                              className="shrink-0 h-6 w-6"
+                              viewBox="0 0 24 24"
+                            >
                               <path
-                                className={`fill-current ${pathname.includes('team') ? 'text-indigo-500' : 'text-slate-600'}`}
+                                className={`fill-current ${
+                                  pathname.includes("team")
+                                    ? "text-indigo-500"
+                                    : "text-slate-600"
+                                }`}
                                 d="M18.974 8H22a2 2 0 012 2v6h-2v5a1 1 0 01-1 1h-2a1 1 0 01-1-1v-5h-2v-6a2 2 0 012-2h.974zM20 7a2 2 0 11-.001-3.999A2 2 0 0120 7zM2.974 8H6a2 2 0 012 2v6H6v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5H0v-6a2 2 0 012-2h.974zM4 7a2 2 0 11-.001-3.999A2 2 0 014 7z"
                               />
                               <path
-                                className={`fill-current ${pathname.includes('team') ? 'text-indigo-300' : 'text-slate-400'}`}
+                                className={`fill-current ${
+                                  pathname.includes("team")
+                                    ? "text-indigo-300"
+                                    : "text-slate-400"
+                                }`}
                                 d="M12 6a3 3 0 110-6 3 3 0 010 6zm2 18h-4a1 1 0 01-1-1v-6H6v-6a3 3 0 013-3h6a3 3 0 013 3v6h-3v6a1 1 0 01-1 1z"
                               />
                             </svg>
-                            
+
                             <span className="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
                               Team
                             </span>

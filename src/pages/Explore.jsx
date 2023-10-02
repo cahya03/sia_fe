@@ -2,8 +2,6 @@ import React, { useState } from "react";
 
 import Sidebar from "../partials/Sidebar";
 import Header from "../partials/Header";
-import UpperButton from "../components/UpperButton";
-import ArsipTable from "../components/ArsipTable";
 
 function Explore() {
   const [sidebarOpen, setSidebarOpen] = useState(false);

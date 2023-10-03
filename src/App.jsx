@@ -13,7 +13,8 @@ import './charts/ChartjsConfig';
 import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import Explore from './pages/Explore';
+//import Explore from './pages/Explore';
+import FileExplorer from './pages/FileExplorer';
 
 function App() {
 
@@ -31,7 +32,7 @@ function App() {
         <Route exact path="/" element={<Dashboard />}/>
         <Route exact path="/login" element={<Login />}/>
         <Route exact path="/register" element={<Register />}/>
-        <Route exact path="/explore" element={<Explore />}/>
+        <Route exact path="/explore" element={<FileExplorer />}/>
         <Route path="*" element={<h1>404</h1>} />
       </Routes>
     </>

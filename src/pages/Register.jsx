@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-axios.defaults.headers.post["Content-Type"] = "application/json";
 
 const Register = () => {
   //navigate untuk pindah halaman
@@ -56,7 +55,7 @@ const Register = () => {
         {
           headers: {
             "Content-Type": "application/json",
-            Accept: "application/json",
+            "Accept": "application/json",
           },
         }
       );

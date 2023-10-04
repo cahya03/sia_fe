@@ -131,7 +131,7 @@ const Register = () => {
       className="min-h-screen flex items-center justify-center bg-cover"
       i
       style={{
-        backgroundImage: "url('src/images/tni-au-apel.jpg')",
+        backgroundImage: "url('src/images/tni-au-apel.svg')",
       }}
     >
       <div className="bg-white p-8 rounded shadow-md w-96">

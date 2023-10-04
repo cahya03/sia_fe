@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useJwt } from './../context/JwtContext';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 
 const Login = () => {
+  const {setJwt} = useJwt();
   const navigate = useNavigate();
-  // const [jwtToken, setJwtToken] = useState('');
-  // const [timestamp, setTimestamp] = useState('');
   const [credentials, setCredentials] = useState({
     email: "",
     password: "",
@@ -33,12 +33,8 @@ const Login = () => {
           },
         }
       );
-      const {token, refreshToken} = response.data;
-    
-      localStorage.setItem('token',token);
-      localStorage.setItem('refreshToken', refreshToken);
-      // setJwtToken(response.token);
-      // setTimestamp(new Date().toString());
+      const {jwt} = response.data;
+      setJwt({jwt: jwt})
       alert('Login Berhasil')
       console.log(response.data);
       navigate("/");

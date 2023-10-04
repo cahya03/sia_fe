@@ -1,10 +1,22 @@
-import React, { useState } from 'react';
-
+import React, { useState,useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 import Sidebar from '../partials/Sidebar';
 import Header from '../partials/Header';
-
+import { useJwt } from './../context/JwtContext';
 function Dashboard() {
-
+  const navigate = useNavigate();
+  const {jwt} = useJwt();
+  let render = 0;
+  useEffect(() => {
+    if (render == 0) {
+      alert(jwt.jwt);
+      if (jwt.jwt == ""){
+        
+        navigate("/login")
+      }
+    }
+    render += 1;
+  }, []);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (

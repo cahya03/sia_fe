@@ -15,6 +15,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 //import Explore from './pages/Explore';
 import FileExplorer from './pages/FileExplorer';
+import Aplikasi from './pages/Aplikasi';
 
 function App() {
 
@@ -33,6 +34,7 @@ function App() {
         <Route exact path="/login" element={<Login />}/>
         <Route exact path="/register" element={<Register />}/>
         <Route exact path="/explore" element={<FileExplorer />}/>
+        <Route exact path="/aplikasi" element={<Aplikasi />}/>
         <Route path="*" element={<h1>404</h1>} />
       </Routes>
     </>

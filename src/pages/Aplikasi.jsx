@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Sidebar from "../partials/Sidebar";
 import Header from "../partials/Header";
+import { useNavigate } from "react-router-dom";
 
 function Aplikasi() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -23,7 +24,7 @@ function Aplikasi() {
             </div>
 
             {/* Cards */}
-            <div className="grid grid-cols-1 items-center px-20 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 items-center md:grid-cols-2 lg:grid-cols-3">
               {/* Soar */}
               <div class="relative mt-6 flex w-96 flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-md">
                 <div class="p-6">

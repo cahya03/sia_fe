@@ -17,10 +17,13 @@ function Aplikasi() {
         <main>
           <div className="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
             {/* Dashboard actions */}
-            <div className="text-center font-black text-4xl font-sans"> APLIKASI </div>
+            <div className="text-center mt-7 font-black text-2xl">
+              {" "}
+              Aplikasi{" "}
+            </div>
 
             {/* Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 items-center px-20 md:grid-cols-2 lg:grid-cols-3">
               {/* Soar */}
               <div class="relative mt-6 flex w-96 flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-md">
                 <div class="p-6">
@@ -28,9 +31,7 @@ function Aplikasi() {
                   <h5 class="mb-2 block font-sans text-xl font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased">
                     Security Orchestration Automation and Response
                   </h5>
-                  <p class="block font-sans text-base font-light leading-relaxed text-inherit antialiased">
-                    
-                  </p>
+                  <p class="block font-sans text-base font-light leading-relaxed text-inherit antialiased"></p>
                 </div>
                 <div class="p-6 pt-0 flex justify-between items-center">
                   <span
@@ -72,8 +73,7 @@ function Aplikasi() {
                   <h5 class="mb-2 block font-sans text-xl font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased">
                     Security Information and Event Management{" "}
                   </h5>
-                  <p class="block font-sans text-base font-light leading-relaxed text-inherit antialiased">
-                  </p>
+                  <p class="block font-sans text-base font-light leading-relaxed text-inherit antialiased"></p>
                 </div>
                 <div class="p-6 pt-0 flex justify-between items-center">
                   <span
@@ -115,8 +115,7 @@ function Aplikasi() {
                   <h5 class="mb-2 block font-sans text-xl font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased pt-10">
                     Network Security Manager{" "}
                   </h5>
-                  <p class="block font-sans text-base font-light leading-relaxed text-inherit antialiased">
-                  </p>
+                  <p class="block font-sans text-base font-light leading-relaxed text-inherit antialiased"></p>
                 </div>
                 <div class="p-6 pt-0 flex justify-between items-center">
                   <span
@@ -158,8 +157,7 @@ function Aplikasi() {
                   <h5 class="mb-2 block font-sans text-xl font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased pt-10">
                     Executive Dashboard and Monitoring{" "}
                   </h5>
-                  <p class="block font-sans text-base font-light leading-relaxed text-inherit antialiased">
-                  </p>
+                  <p class="block font-sans text-base font-light leading-relaxed text-inherit antialiased"></p>
                 </div>
                 <div class="p-6 pt-0 flex justify-between items-center">
                   <span
@@ -201,8 +199,7 @@ function Aplikasi() {
                   <h5 class="mb-2 block font-sans text-xl font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased pt-10">
                     Malware Analyzer{" "}
                   </h5>
-                  <p class="block font-sans text-base font-light leading-relaxed text-inherit antialiased">
-                  </p>
+                  <p class="block font-sans text-base font-light leading-relaxed text-inherit antialiased"></p>
                 </div>
                 <div class="p-6 pt-0 flex justify-between items-center">
                   <span

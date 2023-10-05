@@ -1,46 +1,63 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Sidebar from '../partials/Sidebar';
-import Header from '../partials/Header';
-import { useJwt } from './../context/JwtContext';
+import Sidebar from "../partials/Sidebar";
+import Header from "../partials/Header";
+import { useJwt } from "./../context/JwtContext";
+import jwt_decode from "jwt-decode";
+
 function Dashboard() {
   const navigate = useNavigate();
-  const {jwt} = useJwt();
+  const { jwt,setDecodedToken } = useJwt();
   let render = 0;
+
+
   useEffect(() => {
     if (render == 0) {
-      alert(jwt.jwt);
-      if (jwt.jwt == ""){
-        
-        navigate("/login")
+      if (jwt.jwt == "") {
+        navigate("/login");
+      } else {
+        const dcodedToken = jwt_decode(jwt.jwt);
+        setDecodedToken(
+          {
+            id_user: dcodedToken.id_user,
+            username: dcodedToken.username,
+            email: dcodedToken.email,
+            phone_number: dcodedToken.phone_number,
+            role: dcodedToken.role
+        }
+        );
       }
     }
     render += 1;
   }, []);
+
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
     <div className="flex h-screen overflow-hidden">
-
       {/* Sidebar */}
       <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
       {/* Content area */}
       <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
-
         {/*  Site header */}
         <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
         <main>
           <div className="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
-
             {/* Dashboard actions */}
-            <div className="text-center mt-7 font-black text-2xl p-8"> Satuan Siber Dinas Pengamanan dan Persandian Angkatan Udara </div>
-            <img class="object-none object-center m-auto" src="/src/images/logo-tni-au.png" alt="" />
+            <div className="text-center mt-7 font-black text-2xl p-8">
+              {" "}
+              Satuan Siber Dinas Pengamanan dan Persandian Angkatan Udara{" "}
+            </div>
+            <img
+              class="object-none object-center m-auto"
+              src="/src/images/logo-tni-au.png"
+              alt=""
+            />
 
             {/* Cards */}
             <div className="grid grid-cols-12 gap-6">
-
               {/* Line chart (Acme Plus) */}
               {/* <DashboardCard01 /> */}
               {/* Line chart (Acme Advanced) */}
@@ -67,14 +84,11 @@ function Dashboard() {
               {/* <DashboardCard12 /> */}
               {/* Card (Income/Expenses) */}
               {/* <DashboardCard13 /> */}
-              
             </div>
-
           </div>
         </main>
 
         {/* <Banner /> */}
-
       </div>
     </div>
   );

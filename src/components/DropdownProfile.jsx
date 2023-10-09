@@ -3,12 +3,28 @@ import { Link } from "react-router-dom";
 import Transition from "../utils/Transition";
 import { useJwt } from "./../context/JwtContext";
 import UserAvatar from "../images/user-avatar-32.png";
+import SettingsModal from "./SettingsModal"
 
 function DropdownProfile({ align }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { decodedToken } = useJwt();
   const trigger = useRef(null);
   const dropdown = useRef(null);
+
+
+// for Settings Modal
+  const handleOpenModal = () =>{
+    setIsModalOpen(true);
+  };
+  const handleCloseModal = () =>{
+    setIsModalOpen(false);
+  };
+  //handle untuk pop up Settings Modal 
+  const handleSettingsClick = () => {
+    handleOpenModal();
+    setDropdownOpen(!dropdownOpen); 
+  }
 
   // close on click outside
   useEffect(() => {
@@ -94,8 +110,7 @@ function DropdownProfile({ align }) {
             <li>
               <Link
                 className="font-medium text-sm text-indigo-500 hover:text-indigo-600 dark:hover:text-indigo-400 flex items-center py-1 px-3"
-                to="/settings"
-                onClick={() => setDropdownOpen(!dropdownOpen)}
+                onClick={() => handleSettingsClick()}
               >
                 Settings
               </Link>
@@ -112,6 +127,8 @@ function DropdownProfile({ align }) {
           </ul>
         </div>
       </Transition>
+
+      <SettingsModal isOpen={isModalOpen} onClose={handleCloseModal}/>
     </div>
   );
 }

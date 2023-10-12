@@ -53,11 +53,11 @@ const Login = () => {
       }}
     >
       <div className="bg-white p-8 rounded shadow-md w-96">
-        <h1 className="text-l text-center font-semibold">
-          SISTEM INFORMASI ARSIP TNI AU
+        <h1 className="text-l text-center font-semibold text-black">
+          SISTEM MANAJEMEN BERKAS <br/> SATSIBER DISPAMSANAU
         </h1>
         <hr className="mb-8" />
-        <h2 className="text-2xl mb-4">Login</h2>
+        <h2 className="text-2xl mb-4 text-black">Login</h2>
         {/* <div className="container col-md-4">
           <div class="alert mt-5" id="alertobj">
             <strong>Login Failed!</strong> Wrong Credentials.

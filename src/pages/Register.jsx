@@ -55,7 +55,7 @@ const Register = () => {
         {
           headers: {
             "Content-Type": "application/json",
-            "Accept": "application/json",
+            Accept: "application/json",
           },
         }
       );
@@ -136,7 +136,7 @@ const Register = () => {
     >
       <div className="bg-white p-8 rounded shadow-md w-96">
         <h1 className="text-l text-center font-semibold text-black">
-          SISTEM INFORMASI ARSIP TNI AU
+          SISTEM MANAJEMEN BERKAS <br /> SATSIBER DISPAMSANAU
         </h1>
         <hr className="mb-8" />
         <h2 className="text-2xl mb-4 text-black">Register</h2>

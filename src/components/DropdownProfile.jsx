@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Transition from "../utils/Transition";
 import { useJwt } from "./../context/JwtContext";
 import UserAvatar from "../images/user-avatar-32.png";
-import SettingsModal from "./SettingsModal"
+import SettingsModal from "./ModalSettings"
 
 function DropdownProfile({ align }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);

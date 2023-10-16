@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Sidebar from "../partials/Sidebar";
 import Header from "../partials/Header";
 import { useJwt } from "./../context/JwtContext";
-import jwt_decode from "jwt-decode";
+import logoau from "../images/logo-tni-au.png"
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -51,7 +51,7 @@ function Dashboard() {
             </div>
             <img
               class="object-none object-center m-auto"
-              src="/src/images/logo-tni-au.png"
+              src={logoau}
               alt=""
             />
 

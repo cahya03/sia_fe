@@ -6,6 +6,9 @@ const Register = () => {
   //navigate untuk pindah halaman
   const navigate = useNavigate();
 
+  //confirm OTP state
+  const [otpState, setOtpState] = useState(true);
+
   // credentials yang menampung formdata
   const [credentials, setCredentials] = useState({
     username: "",
@@ -14,6 +17,7 @@ const Register = () => {
     confirmPassword: "",
     phoneNumber: "",
     role: "",
+    otp: ""
   });
 
   // handle untuk mengisi credentials
@@ -41,30 +45,57 @@ const Register = () => {
       e.target.password.setCustomValidity(passwordError);
     } else if (confirmPasswordError) {
       e.target.confirmPassword.setCustomValidity(confirmPasswordError);
-    }
-    try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/register`,
-        [
-          credentials.username,
-          credentials.email,
-          credentials.password,
-          credentials.phoneNumber,
-          credentials.role,
-        ],
-        {
-          headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-          },
+    } else {
+      if (credentials.otp === "") {
+        try {
+          const response = await axios.post(
+            `${import.meta.env.VITE_BACKEND_URL}/otpform`,
+            [
+              credentials.username,
+              credentials.email,
+              credentials.phoneNumber,
+              credentials.role,
+            ],
+            {
+              headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+              },
+            }
+          );
+          alert("Your form are being reviewed, Contact HR for Requested OTP");
+          setOtpState(false);
+        } catch (error) {
+          alert(error);
+          console.log(error);
         }
-      );
-      alert("BERHASIL REGISTER!!!");
-      console.log(response.data);
-      navigate("/login");
-    } catch (error) {
-      console.log(error);
+      } else {
+        try {
+          const response = await axios.post(
+            `${import.meta.env.VITE_BACKEND_URL}/register`,
+            [
+              credentials.username,
+              credentials.email,
+              credentials.password,
+              credentials.phoneNumber,
+              credentials.role,
+              credentials.otp
+            ],
+            {
+              headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+              },
+            }
+          );
+          alert("Register Successful");
+          navigate("/login");
+        } catch (error) {
+          alert(error);
+        }
+      }
     }
+
   };
 
   //state untuk password
@@ -124,6 +155,8 @@ const Register = () => {
         setConfirmPasswordError("");
       }
     }
+
+    
   };
 
   return (
@@ -136,7 +169,7 @@ const Register = () => {
     >
       <div className="bg-white p-8 rounded shadow-md w-96">
         <h1 className="text-l text-center font-semibold text-black">
-          SISTEM INFORMASI ARSIP TNI AU
+          SATSIBER DISPAMSANAU ARCHIVE SYSTEM
         </h1>
         <hr className="mb-8" />
         <h2 className="text-2xl mb-4 text-black">Register</h2>
@@ -222,24 +255,49 @@ const Register = () => {
               value={credentials.role}
               onChange={handleChange}
             >
-              <option value="kasatsiber">KASATSIBER</option>
-              <option value="kasiops">KASIOPS</option>
-              <option value="katim_cegah">KATIM PENCEGAHAN</option>
-              <option value="katim_tanggul">KATIM PENANGGULANGAN</option>
-              <option value="katim_pulih">KATIM PEMULIHAN</option>
-              <option value="katim_tindak">KATIM PENINDAKAN</option>
-              <option value="staf_cegah">Staf Pencegahan</option>
-              <option value="staf_tanggul">Staf Penanggulangan</option>
-              <option value="staf_pulih">Staf Pemulihan</option>
-              <option value="staf_tindak">Staf Penindakan</option>
+              <option value=""></option>
+              <option value="kasatsiber">Kasatsiber</option>
+              <option value="kasiops">Kasiops</option>
+              <option value="katim_cegah">Katim Pencegahan</option>
+              <option value="katim_tanggul">Katim Penanggulangan</option>
+              <option value="katim_pulih">Katim Pemulihan</option>
+              <option value="katim_tindak">Katim Penindakan</option>
+              <option value="staff_cegah">Staff Pencegahan</option>
+              <option value="staff_tanggul">Staff Penanggulangan</option>
+              <option value="staff_pulih">Staff Pemulihan</option>
+              <option value="staff_tindak">Staff Penindakan</option>
             </select>
           </div>
-          <button
-            type="submit"
-            className="bg-green-500 hover:bg-green-600 text-white text-sm font-semibold py-2 px-4 rounded-lg mb-2"
-          >
-            Register
-          </button>
+          {otpState &&
+            <button
+              type="submit"
+              className="bg-green-500 hover:bg-green-600 text-white text-sm font-semibold py-2 px-4 rounded-lg mb-2"
+            >
+              Request OTP
+            </button>}
+          {!otpState &&
+            <div>
+              <div className="mb-4">
+                <label className="block text-black text-sm font-bold mb-2">
+                  OTP
+                </label>
+                <input
+                  type="text"
+                  className="w-full px-3 py-2 border rounded-lg"
+                  placeholder="Requested OTP"
+                  name="otp"
+                  value={credentials.otp}
+                  onChange={handleChange}
+                />
+              </div>
+              <button
+                type="submit"
+                className="bg-green-500 hover:bg-green-600 text-white text-sm font-semibold py-2 px-4 rounded-lg mb-2"
+              >
+                Register
+              </button>
+            </div>
+          }
           <br />
           <a className="font-medium text-xs" href="/login">
             Already have an account? Login

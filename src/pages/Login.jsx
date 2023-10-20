@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useJwt } from './../context/JwtContext';
+import jwtDecode from "jwt-decode";
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 
 const Login = () => {
-  const {setJwt} = useJwt();
+  const {setJwt,setDecodedToken} = useJwt();
   const navigate = useNavigate();
   const [credentials, setCredentials] = useState({
     email: "",
@@ -34,14 +35,16 @@ const Login = () => {
         }
       );
       const {jwt} = response.data;
-      setJwt({jwt: jwt})
-      alert('Login Berhasil')
+      const decode = jwtDecode(jwt);
+      setJwt({jwt: jwt});
+      setDecodedToken(decode);
+      
+      alert('Login Successful')
       console.log(response.data);
       navigate("/");
     } catch (error) {
       // Handle login error (e.g., show error message)
-      alert(error);
-      console.error(error);
+      alert("Failed to login");
     }
   };
 

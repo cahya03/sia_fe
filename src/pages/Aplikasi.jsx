@@ -1,10 +1,23 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Sidebar from "../partials/Sidebar";
 import Header from "../partials/Header";
+import { useJwt } from "./../context/JwtContext";
 import { useNavigate } from "react-router-dom";
-
 function Aplikasi() {
+  const navigate = useNavigate();
+  const { jwt } = useJwt();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  let render = 0
+  useEffect(() => {
+    if (render == 0) {
+      if (jwt.jwt == "") {
+        navigate("/login");
+      } else {
+        
+      }
+    }
+    render += 1;
+  }, []);
   return (
     <div className="flex h-screen overflow-hidden">
       {/* Sidebar */}

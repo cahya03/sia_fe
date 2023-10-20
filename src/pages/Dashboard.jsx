@@ -7,29 +7,18 @@ import logoau from "../images/logo-tni-au.png"
 
 function Dashboard() {
   const navigate = useNavigate();
-  const { jwt,setDecodedToken } = useJwt();
-  let render = 0;
-
-
-  // useEffect(() => {
-  //   if (render == 0) {
-  //     if (jwt.jwt == "") {
-  //       navigate("/login");
-  //     } else {
-  //       const dcodedToken = jwt_decode(jwt.jwt);
-  //       setDecodedToken(
-  //         {
-  //           id_user: dcodedToken.id_user,
-  //           username: dcodedToken.username,
-  //           email: dcodedToken.email,
-  //           phone_number: dcodedToken.phone_number,
-  //           role: dcodedToken.role
-  //       }
-  //       );
-  //     }
-  //   }
-  //   render += 1;
-  // }, []);
+  const { jwt } = useJwt();
+  let render = 0
+  useEffect(() => {
+    if (render == 0) {
+      if (jwt.jwt == "") {
+        navigate("/login");
+      } else {
+        
+      }
+    }
+    render += 1;
+  }, []);
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   return (

@@ -45,7 +45,7 @@ export default function SearchBar({ currentDirectoryPath, currentVolume, setSear
         
         
     }
-    return (<div className="absolute right-4 top-13">
+    return (<div className="absolute right-12 top-13">
       <Input value={searchValue} setValue={setSearchValue} placeholder={`Search ${currentPlace || "PC"}`} className="rounded-bl-none rounded-br-none" onSubmit={onSearch} size={InputSize.Large}/>
       <SearchFilter filters={searchFilter} setFilters={setSearchFilter}/>
     </div>);

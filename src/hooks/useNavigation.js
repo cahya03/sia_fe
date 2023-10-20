@@ -3,6 +3,7 @@ export default function useNavigation(searchResults, setSearchResults) {
     const [pathHistory, setPathHistory] = useState([""]);
     const [historyPlace, setHistoryPlace] = useState(0);
     const [currentVolume, setCurrentVolume] = useState("");
+    const [searchShow,setSearchShow] = useState(false);
     function onBackArrowClick() {
         if (searchResults.length > 0) {
             setHistoryPlace(historyPlace);
@@ -14,6 +15,9 @@ export default function useNavigation(searchResults, setSearchResults) {
     }
     function onForwardArrowClick() {
         setHistoryPlace((prevPlace) => prevPlace + 1);
+    }
+    function onSearchClick(){
+        searchShow ? setSearchShow(false) : setSearchShow(true)
     }
     function canGoForward() {
         return historyPlace < pathHistory.length - 1;
@@ -32,5 +36,8 @@ export default function useNavigation(searchResults, setSearchResults) {
         canGoBackward,
         currentVolume,
         setCurrentVolume,
+        onSearchClick,
+        setSearchShow,
+        searchShow,
     };
 }

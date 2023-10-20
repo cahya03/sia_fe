@@ -1,10 +1,185 @@
 import { useNavigate } from "react-router-dom";
 import { useJwt } from "../context/JwtContext";
+import React, { useState } from "react";
+import axios from "axios";
 
 const SettingsModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
+  const { decodedToken } = useJwt();
+  //navigate untuk pindah halaman
   const navigate = useNavigate();
-  const {decodedToken} = useJwt();
+
+  //confirm OTP state
+  const [otpState, setOtpState] = useState(true);
+
+  // credentials yang menampung formdata
+  const [credentials, setCredentials] = useState({
+    username: decodedToken.username,
+    email: decodedToken.email,
+    new_email: decodedToken.email,
+    password: "",
+    confirmPassword: "",
+    phoneNumber: decodedToken.phone_number,
+    role: decodedToken.role,
+    otp: ""
+  });
+
+  // handle untuk mengisi credentials
+  const handleDelete = async (e) => {
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/settingsdelete`,
+        [
+          credentials.email,
+          credentials.otp,
+        ],
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+          },
+        }
+      );
+      alert("Delete User Successful");
+      navigate("/login");
+    } catch (error) {
+      alert(error);
+    }
+  };
+
+  // handle untuk mengisi credentials
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setCredentials({
+      ...credentials,
+      [name]: value,
+    });
+  };
+
+  // handle untuk submit form
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (
+      credentials.username === "" ||
+      credentials.email === "" ||
+      credentials.phoneNumber === "" ||
+      credentials.role === ""
+    ) {
+      alert("Fill All Form!");
+    } else if (passwordError) {
+      e.target.password.setCustomValidity(passwordError);
+    } else if (confirmPasswordError) {
+      e.target.confirmPassword.setCustomValidity(confirmPasswordError);
+    } else {
+      if (credentials.otp === "") {
+        try {
+          const response = await axios.post(
+            `${import.meta.env.VITE_BACKEND_URL}/otp`,
+            [
+              credentials.email
+            ],
+            {
+              headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+              },
+            }
+          );
+          alert("Check OTP in your email's inbox / spam");
+          setOtpState(false);
+        } catch (error) {
+          alert(error);
+          console.log(error);
+        }
+      } else {
+        try {
+          const response = await axios.post(
+            `${import.meta.env.VITE_BACKEND_URL}/settingschange`,
+            [
+              credentials.username,
+              credentials.email,
+              credentials.new_email,
+              credentials.password,
+              credentials.phoneNumber,
+              credentials.otp,
+            ],
+            {
+              headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+              },
+            }
+          );
+          alert("Change User Successful");
+          navigate("/login");
+        } catch (error) {
+          alert(error);
+        }
+      }
+    }
+
+  };
+
+  //state untuk password
+  const [passwordError, setPasswordErr] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
+
+  // handle untuk validasi password
+  const handleValidation = (e) => {
+    e.target.setCustomValidity("");
+
+    const passwordInputValue = e.target.value.trim();
+    const passwordInputFieldName = e.target.name;
+
+    //for password
+    if (passwordInputFieldName === "password") {
+      const uppercaseRegExp = /(?=.*?[A-Z])/;
+      const lowercaseRegExp = /(?=.*?[a-z])/;
+      const digitsRegExp = /(?=.*?[0-9])/;
+      const specialCharRegExp = /(?=.*?[#?!@$%^&*-])/;
+      const minLengthRegExp = /.{8,}/;
+
+      const passwordLength = passwordInputValue.length;
+      const uppercasePassword = uppercaseRegExp.test(passwordInputValue);
+      const lowercasePassword = lowercaseRegExp.test(passwordInputValue);
+      const digitsPassword = digitsRegExp.test(passwordInputValue);
+      const specialCharPassword = specialCharRegExp.test(passwordInputValue);
+      const minLengthPassword = minLengthRegExp.test(passwordInputValue);
+
+      let errMsg = "";
+      if (passwordLength === 0) {
+        errMsg = "Password is empty";
+      } else if (!uppercasePassword) {
+        errMsg = "At least one Uppercase";
+      } else if (!lowercasePassword) {
+        errMsg = "At least one Lowercase";
+      } else if (!digitsPassword) {
+        errMsg = "At least one digit";
+      } else if (!specialCharPassword) {
+        errMsg = "At least one Special Characters";
+      } else if (!minLengthPassword) {
+        errMsg = "At least minumum 8 characters";
+      } else {
+        errMsg = "";
+      }
+      setPasswordErr(errMsg);
+    }
+
+    //for confirm password
+    if (
+      passwordInputFieldName === "confirmPassword" ||
+      (passwordInputFieldName === "password" &&
+        credentials.confirmPassword.length > 0)
+    ) {
+      if (credentials.confirmPassword !== credentials.password) {
+        setConfirmPasswordError("Confirm password is not matched");
+      } else {
+        setConfirmPasswordError("");
+      }
+    }
+
+
+  };
   return (
     <>
       <div
@@ -44,10 +219,130 @@ const SettingsModal = ({ isOpen, onClose }) => {
                       Account Details
                     </h3>
                     <div className="relative py-6 flex-auto">
-                      <p>Username: {decodedToken.username}</p>
-                      <p>Email: {decodedToken.email}</p>
-                      <p>Phone Number: {decodedToken.phone_number}</p>
-                      <p>Role: {decodedToken.role}</p>
+                      <form onSubmit={handleSubmit}>
+                        <div className="mb-4">
+                          <label className="block text-black text-sm font-bold mb-2">
+                            Username
+                          </label>
+                          <input
+                            type="text"
+                            className="w-full px-3 py-2 border rounded-lg text-black"
+                            placeholder="Fill if change Username"
+                            name="username"
+                            value={credentials.username}
+                            onChange={handleChange}
+                          />
+                        </div>
+                        <div className="mb-4">
+                          <label className="block text-black text-sm font-bold mb-2">
+                            Email
+                          </label>
+                          <input
+                            type="email"
+                            className="w-full px-3 py-2 border rounded-lg text-black"
+                            placeholder="Fill if change Email"
+                            name="email"
+                            value={credentials.email}
+                            onChange={handleChange}
+                          />
+                        </div>
+                        <div className="mb-4">
+                          <label className="block text-black text-sm font-bold mb-2">
+                            Phone Number
+                          </label>
+                          <input
+                            type="tel"
+                            className="w-full px-3 py-2 border rounded-lg text-black"
+                            placeholder="Fill if change Phone Number"
+                            pattern="[0-9]{4}[0-9]{4}[0-9]{4}"
+                            name="phoneNumber"
+                            value={credentials.phoneNumber}
+                            onChange={handleChange}
+                          />
+                        </div>
+                        <div className="mb-4">
+                          <label className="block text-gray-700 text-sm font-bold mb-2">
+                            Password
+                          </label>
+                          <input
+                            type="password"
+                            className="w-full px-3 py-2 border rounded-lg"
+                            placeholder="Skip if not changing password"
+                            name="password"
+                            value={credentials.password}
+                            onChange={handleChange}
+                            onKeyUp={handleValidation}
+                          />
+                          <p className="text-red-600 font-bold">{passwordError}</p>
+                        </div>
+                        <div className="mb-4">
+                          <label className="block text-gray-700 text-sm font-bold mb-2">
+                            Confirm Password
+                          </label>
+                          <input
+                            type="password"
+                            className="w-full px-3 py-2 border rounded-lg"
+                            placeholder="Skip if not changing password"
+                            name="confirmPassword"
+                            value={credentials.confirmPassword}
+                            onChange={handleChange}
+                            onKeyUp={handleValidation}
+                          />
+                          <p className="text-red-600 font-bold">{confirmPasswordError}</p>
+                        </div>
+                        <div className="mb-4">
+                          <label className="block text-black text-sm font-bold mb-2">
+                            Role
+                          </label>
+                          <input
+                            type="text"
+                            className="w-full px-3 py-2 border rounded-lg"
+                            name="role"
+                            value={credentials.role}
+                            onChange={handleChange}
+                            disabled="true"
+                          />
+                        </div>
+                        {otpState &&
+                          <button
+                            type="submit"
+                            className="bg-green-500 hover:bg-green-600 text-white text-sm font-semibold py-2 px-4 rounded-lg mb-2"
+                          >
+                            Send OTP to e-mail
+                          </button>}
+                        {!otpState &&
+                          <div>
+                            <div className="mb-4">
+                              <label className="block text-black text-sm font-bold mb-2">
+                                OTP
+                              </label>
+                              <input
+                                type="text"
+                                className="w-full px-3 py-2 border rounded-lg"
+                                placeholder="Requested OTP"
+                                name="otp"
+                                value={credentials.otp}
+                                onChange={handleChange}
+                              />
+                            </div>
+                            <button
+                              type="submit"
+                              className=" bg-green-500 hover:bg-green-600 text-white text-sm font-semibold py-2 px-4 rounded-lg mb-2"
+                            >
+                              Change User Data
+                            </button>
+                            <button
+                              type="button"
+                              class="  justify-center rounded-md bg-red-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 sm:ml-3 sm:w-auto m-5"
+                              onClick={handleDelete}>
+                              Delete Account
+                            </button>
+
+                          </div>
+                        }
+                        <br />
+
+                      </form>
                     </div>
                     <div class="mt-2">
                       <p class="text-sm text-gray-500">

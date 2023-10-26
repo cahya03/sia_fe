@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useJwt } from './../context/JwtContext';
-axios.defaults.headers.post['Content-Type'] = 'application/json';
-
+import { useJwt } from "./../context/JwtContext";
+import jwtDecode from "jwt-decode";
+axios.defaults.headers.post["Content-Type"] = "application/json";
 
 const Login = () => {
-  const {setJwt} = useJwt();
+  const { setJwt, setDecodedToken } = useJwt();
   const navigate = useNavigate();
   const [credentials, setCredentials] = useState({
     email: "",
@@ -28,20 +28,22 @@ const Login = () => {
         credentials,
         {
           headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
+            "Content-Type": "application/json",
+            Accept: "application/json",
           },
         }
       );
-      const {jwt} = response.data;
-      setJwt({jwt: jwt})
-      alert('Login Berhasil')
+      const { jwt } = response.data;
+      const decode = jwtDecode(jwt);
+      setJwt({ jwt: jwt });
+      setDecodedToken(decode);
+
+      alert("Login Successful");
       console.log(response.data);
       navigate("/");
     } catch (error) {
       // Handle login error (e.g., show error message)
-      alert(error);
-      console.error(error);
+      alert("Failed to login");
     }
   };
 
@@ -53,11 +55,14 @@ const Login = () => {
       }}
     >
       <div className="bg-white p-8 rounded shadow-md w-96">
-        <h1 className="text-l text-center font-semibold text-black">
-          SISTEM MANAJEMEN BERKAS <br/> SATSIBER DISPAMSANAU
+        <h1 className="text-l text-center font-semibold">
+          SISTEM MANAJEMEN BERKAS <br></br>BERBASIS AWAN (SIMBA)
+        </h1>
+        <h1 className="text-xl text-center font-semibold">
+          SATSIBER DISPAMSANAU
         </h1>
         <hr className="mb-8" />
-        <h2 className="text-2xl mb-4 text-black">Login</h2>
+        <h2 className="text-2xl mb-4">Login</h2>
         {/* <div className="container col-md-4">
           <div class="alert mt-5" id="alertobj">
             <strong>Login Failed!</strong> Wrong Credentials.

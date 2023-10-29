@@ -8,22 +8,22 @@ import SettingsModal from "./SettingsModal"
 function DropdownProfile({ align }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { decodedToken } = useJwt();
+  const { decodedToken, setDecodedToken, setJwt } = useJwt();
   const trigger = useRef(null);
   const dropdown = useRef(null);
 
 
-// for Settings Modal
-  const handleOpenModal = () =>{
+  // for Settings Modal
+  const handleOpenModal = () => {
     setIsModalOpen(true);
   };
-  const handleCloseModal = () =>{
+  const handleCloseModal = () => {
     setIsModalOpen(false);
   };
   //handle untuk pop up Settings Modal 
   const handleSettingsClick = () => {
     handleOpenModal();
-    setDropdownOpen(!dropdownOpen); 
+    setDropdownOpen(!dropdownOpen);
   }
 
   // close on click outside
@@ -82,9 +82,8 @@ function DropdownProfile({ align }) {
       </button>
 
       <Transition
-        className={`origin-top-right z-10 absolute top-full min-w-44 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 py-1.5 rounded shadow-lg overflow-hidden mt-1 ${
-          align === "right" ? "right-0" : "left-0"
-        }`}
+        className={`origin-top-right z-10 absolute top-full min-w-44 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 py-1.5 rounded shadow-lg overflow-hidden mt-1 ${align === "right" ? "right-0" : "left-0"
+          }`}
         show={dropdownOpen}
         enter="transition ease-out duration-200 transform"
         enterStart="opacity-0 -translate-y-2"
@@ -119,7 +118,11 @@ function DropdownProfile({ align }) {
               <Link
                 className="font-medium text-sm text-indigo-500 hover:text-indigo-600 dark:hover:text-indigo-400 flex items-center py-1 px-3"
                 to="/login"
-                onClick={() => setDropdownOpen(!dropdownOpen)}
+                onClick={() => {
+                  setJwt({ jwt: "" })
+                  setDecodedToken({ id_user: "", username: "", email: "", phone_number: "", role: "" })
+                  setDropdownOpen(!dropdownOpen)
+                }}
               >
                 Log Out
               </Link>
@@ -128,7 +131,7 @@ function DropdownProfile({ align }) {
         </div>
       </Transition>
 
-      <SettingsModal isOpen={isModalOpen} onClose={handleCloseModal}/>
+      <SettingsModal isOpen={isModalOpen} onClose={handleCloseModal} />
     </div>
   );
 }

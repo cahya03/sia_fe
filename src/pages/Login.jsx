@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useJwt } from './../context/JwtContext';
-import jwtDecode from "jwt-decode";
 axios.defaults.headers.post['Content-Type'] = 'application/json';
+import JWT from "jsonwebtoken"
 
 
 const Login = () => {
-  const {setJwt,setDecodedToken} = useJwt();
+
+  const { setJwt, setDecodedToken } = useJwt();
+
   const navigate = useNavigate();
   const [credentials, setCredentials] = useState({
     email: "",
@@ -34,16 +36,20 @@ const Login = () => {
           },
         }
       );
-      const {jwt} = response.data;
-      const decode = jwtDecode(jwt);
-      setJwt({jwt: jwt});
-      setDecodedToken(decode);
-      
-      alert('Login Successful')
-      console.log(response.data);
-      navigate("/");
+      const { jwt } = response.data;
+      JWT.verify(jwt, import.meta.env.VITE_JWT_SECRET, { algorithms: ['HS256'] }, (err, decoded) => {
+        if (err) {
+          // Token verification failed
+          console.error('Token verification failed:', err);
+        } else {
+          // Token is valid
+          console.log('Token is valid');
+          setJwt({ jwt: jwt });
+          setDecodedToken(decoded);
+          navigate("/");
+        }
+      });
     } catch (error) {
-      // Handle login error (e.g., show error message)
       alert("Failed to login");
     }
   };
@@ -57,7 +63,7 @@ const Login = () => {
     >
       <div className="bg-white p-8 rounded shadow-md w-96">
         <h1 className="text-l text-center font-semibold">
-          SISTEM INFORMASI ARSIP TNI AU
+          SATSIBER DISPAMSANAU ARCHIVE SYSTEM
         </h1>
         <hr className="mb-8" />
         <h2 className="text-2xl mb-4">Login</h2>

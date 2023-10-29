@@ -5,10 +5,12 @@ import InputModal from "../InputModal";
 import { useState } from "react";
 import fileDownload from 'js-file-download'
 //import { confirm } from "@tauri-apps/api/dialog";
+import { useJwt } from "../../context/JwtContext";
 import { createFile, createDirectory, deleteFile, renameFile, downloadFile, uploadFile } from "../../ipc";
 import { addContent, deleteContent, renameContent, selectContentIdx } from "../../state/slices/currentDirectorySlice";
 import { createDirectoryContent, removeFileNameFromPath } from "../../util";
 export default function ContextMenus() {
+    const { jwt } = useJwt();
     const { currentContextMenu, contextMenuPayload } = useAppSelector(state => state.contextMenu);
     const [newFileShown, setNewFileShown] = useState(false);
     const [newDirectoryShown, setNewDirectoryShown] = useState(false);
@@ -20,7 +22,7 @@ export default function ContextMenus() {
     async function onNewFile(name) {
         try {
             const path = generalPayload.currentPath + "\\" + name;
-            await createFile(path);
+            await createFile(path, jwt.jwt);
             const newDirectoryContent = createDirectoryContent("File", name, path);
             dispatch(addContent(newDirectoryContent));
             dispatch(selectContentIdx(0)); // Select top item as content is added to the top.
@@ -32,7 +34,7 @@ export default function ContextMenus() {
     async function onNewFolder(name) {
         try {
             const path = generalPayload.currentPath + "\\" + name;
-            await createDirectory(path);
+            await createDirectory(path, jwt.jwt);
             const newDirectoryContent = createDirectoryContent("Directory", name, path);
             dispatch(addContent(newDirectoryContent));
             dispatch(selectContentIdx(0)); // Select top item as content is added to the top.
@@ -46,7 +48,7 @@ export default function ContextMenus() {
             const path = removeFileNameFromPath(directoryEntityPayload.filePath);
             const oldPath = path + "\\" + directoryEntityPayload.fileName;
             const newPath = path + "\\" + newName;
-            await renameFile(oldPath, newPath);
+            await renameFile(oldPath, newPath, jwt.jwt);
             const oldContent = createDirectoryContent(directoryEntityPayload.type, directoryEntityPayload.fileName, oldPath);
             const newContent = createDirectoryContent(directoryEntityPayload.type, newName, newPath);
             dispatch(renameContent([oldContent, newContent]));
@@ -59,7 +61,7 @@ export default function ContextMenus() {
     async function onDelete() {
         try {
 
-            await deleteFile(directoryEntityPayload.filePath);
+            await deleteFile(directoryEntityPayload.type, directoryEntityPayload.filePath, jwt.jwt);
             const content = createDirectoryContent(directoryEntityPayload.type, directoryEntityPayload.fileName, directoryEntityPayload.filePath);
             dispatch(deleteContent(content));
         }
@@ -72,13 +74,17 @@ export default function ContextMenus() {
         fileInput.type = 'file';
         fileInput.style.display = 'none';
         // Add an event listener to handle the file selection
-        fileInput.addEventListener('change', (event) => {
-            
+        fileInput.addEventListener('change', async (event) => {
+
             const selectedFile = event.target.files[0];
             if (selectedFile) {
                 // Handle the selected file here, for example, upload it to the server
                 const cleanedPath = generalPayload.currentPath.replace(/\\/g, '/')
-                uploadFile(cleanedPath, selectedFile)
+                await uploadFile(cleanedPath, selectedFile, jwt.jwt);
+                const path = generalPayload.currentPath + "\\" + selectedFile.name;
+                const newDirectoryContent = createDirectoryContent("File", selectedFile.name, path);
+                dispatch(addContent(newDirectoryContent));
+                dispatch(selectContentIdx(0)); // Select top item as content is added to the top.
             }
             // Remove the input element from the DOM
             document.body.removeChild(fileInput);
@@ -90,9 +96,8 @@ export default function ContextMenus() {
     }
     async function onDownloadFile() {
         try {
-            const content = await downloadFile(directoryEntityPayload.filePath);
-            fileDownload(content, directoryEntityPayload.fileName);
-            alert("File downloaded")
+            const content = await downloadFile(directoryEntityPayload.filePath, jwt.jwt);
+            content.name == "AxiosError" ? alert("Can't download folder") : fileDownload(content, directoryEntityPayload.fileName)
         } catch (e) {
             alert(e);
         }

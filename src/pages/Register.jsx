@@ -1,8 +1,34 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { stringify } from "querystring";
+
 
 const Register = () => {
+  const [listState, setListState] = useState([])
+
+  async function setList() {
+    const arr = []
+    const response = await axios.get(
+      `${import.meta.env.VITE_BACKEND_URL}/listrole`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      }
+    );
+    let x = response.data.map((e)=> {return  <option value={e}>{e}</option>})
+    setListState(x)
+  }
+
+  let render = 0;
+  useEffect(() => {
+    if (render === 0) {
+      setList()
+    }
+    render += 1; // 
+  }, []);
   //navigate untuk pindah halaman
   const navigate = useNavigate();
 
@@ -32,6 +58,7 @@ const Register = () => {
   // handle untuk submit form
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (
       credentials.username === "" ||
       credentials.email === "" ||
@@ -48,6 +75,7 @@ const Register = () => {
     } else {
       if (credentials.otp === "") {
         try {
+
           const response = await axios.post(
             `${import.meta.env.VITE_BACKEND_URL}/otpform`,
             [
@@ -60,7 +88,9 @@ const Register = () => {
               headers: {
                 "Content-Type": "application/json",
                 "Accept": "application/json",
+
               },
+
             }
           );
           alert("Your form are being reviewed, Contact HR for Requested OTP");
@@ -156,7 +186,7 @@ const Register = () => {
       }
     }
 
-    
+
   };
 
   return (
@@ -256,16 +286,7 @@ const Register = () => {
               onChange={handleChange}
             >
               <option value=""></option>
-              <option value="kasatsiber">Kasatsiber</option>
-              <option value="kasiops">Kasiops</option>
-              <option value="katim_cegah">Katim Pencegahan</option>
-              <option value="katim_tanggul">Katim Penanggulangan</option>
-              <option value="katim_pulih">Katim Pemulihan</option>
-              <option value="katim_tindak">Katim Penindakan</option>
-              <option value="staff_cegah">Staff Pencegahan</option>
-              <option value="staff_tanggul">Staff Penanggulangan</option>
-              <option value="staff_pulih">Staff Pemulihan</option>
-              <option value="staff_tindak">Staff Penindakan</option>
+              {listState}
             </select>
           </div>
           {otpState &&

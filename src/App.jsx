@@ -15,11 +15,9 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import FileExplorer from './pages/FileExplorer';
 import Aplikasi from './pages/Aplikasi';
-import { JwtProvider } from './context/JwtContext';
 
 function App() {
   const location = useLocation();
-
   useEffect(() => {
     document.querySelector('html').style.scrollBehavior = 'auto'
     window.scroll({ top: 0 })
@@ -27,7 +25,6 @@ function App() {
   }, [location.pathname]); // triggered on route change
 
   return (
-    <JwtProvider>
       <Routes>
         <Route exact path="/" element={<Dashboard />}/>
         <Route exact path="/login" element={<Login />}/>
@@ -36,7 +33,6 @@ function App() {
         <Route exact path="/aplikasi" element={<Aplikasi />}/>
         <Route path="*" element={<h1>404</h1>} />
       </Routes>
-    </JwtProvider>
   );
 }
 

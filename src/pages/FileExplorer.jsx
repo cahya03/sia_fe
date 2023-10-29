@@ -16,7 +16,7 @@ import Header from "../partials/Header";
 import { useNavigate } from "react-router-dom";
 import { useJwt } from "./../context/JwtContext";
 function FileExplorer() {
-    
+    const { jwt } = useJwt();
     
     const [volumes, setVolumes] = useState([]);
     const directoryContents = useAppSelector(selectDirectoryContents);
@@ -24,7 +24,7 @@ function FileExplorer() {
     const [searchResults, setSearchResults] = useState([]);
     const { pathHistory, historyPlace, setHistoryPlace, onBackArrowClick, onForwardArrowClick, canGoBackward, canGoForward, currentVolume, setCurrentVolume, onSearchClick, searchShow, setSearchShow } = useNavigation(searchResults, setSearchResults);
     async function getNewDirectoryContents() {
-        const contents = await openDirectory(pathHistory[historyPlace]);
+        const contents = await openDirectory(pathHistory[historyPlace],jwt.jwt);
         dispatch(updateDirectoryContents(contents));
     }
     async function onVolumeClick(mountpoint) {
@@ -54,13 +54,13 @@ function FileExplorer() {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
+                    
                 },
             }
         );
         setVolumes(response.data);
     }
     const navigate = useNavigate();
-    const { jwt } = useJwt();
     let render = 0;
     useEffect(() => {
         if (render === 0) {

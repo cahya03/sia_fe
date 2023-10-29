@@ -199,13 +199,10 @@ const Register = () => {
     >
       <div className="bg-white p-8 rounded shadow-md w-96">
       <h1 className="text-l text-center font-semibold">
-      SISTEM MANAJEMEN BERKAS <br></br>BERBASIS AWAN (SIMBA)
-    </h1>
-    <h1 className="text-xl text-center font-semibold">
-      SATSIBER DISPAMSANAU
+      SATSIBER DISPAMSANAU ARCHIVE SYSTEM
     </h1>
         <hr className="mb-8" />
-        <h2 className="text-2xl mb-4 text-black">Register</h2>
+        <h2 className="text-2xl mb-4">Register</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label className="block text-black text-sm font-bold mb-2">

@@ -39,7 +39,7 @@ function Dashboard() {
               Satuan Siber Dinas Pengamanan dan Persandian Angkatan Udara{" "}
             </div>
             <img
-              class="object-none object-center m-auto"
+              className="object-none object-center m-auto"
               src={logoau}
               alt=""
             />

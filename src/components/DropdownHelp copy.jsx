@@ -1,11 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Transition from '../utils/Transition';
+import { useJwt } from "../context/JwtContext";
 
 function DropdownHelp({
   align
 }) {
-
+  const {decodedToken} = useJwt();
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const trigger = useRef(null);
@@ -40,10 +41,11 @@ function DropdownHelp({
         aria-haspopup="true"
         onClick={() => setDropdownOpen(!dropdownOpen)}
         aria-expanded={dropdownOpen}
+        aria-modal="true"
       >
         <span className="sr-only">Need help?</span>
-        <svg className="w-4 h-4" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-          <path className="fill-current text-slate-500 dark:text-slate-400" d="M8 0C3.6 0 0 3.6 0 8s3.6 8 8 8 8-3.6 8-8-3.6-8-8-8zm0 12c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1zm1-3H7V4h2v5z" />
+        <svg className="w-4 h-4" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path className="fill-current text-slate-500 dark:text-slate-400" d="M12.451 17.337l-2.451 2.663h-2v2h-2v2h-6v-5l6.865-6.949c1.08 2.424 3.095 4.336 5.586 5.286zm11.549-9.337c0 4.418-3.582 8-8 8s-8-3.582-8-8 3.582-8 8-8 8 3.582 8 8zm-3-3c0-1.104-.896-2-2-2s-2 .896-2 2 .896 2 2 2 2-.896 2-2z" />
         </svg>
       </button>
 

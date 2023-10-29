@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+
 import { useJwt } from './../context/JwtContext';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 import JWT from "jsonwebtoken"
@@ -9,7 +10,6 @@ import JWT from "jsonwebtoken"
 const Login = () => {
 
   const { setJwt, setDecodedToken } = useJwt();
-
   const navigate = useNavigate();
   const [credentials, setCredentials] = useState({
     email: "",
@@ -31,8 +31,8 @@ const Login = () => {
         credentials,
         {
           headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
+            "Content-Type": "application/json",
+            Accept: "application/json",
           },
         }
       );

@@ -1,10 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useJwt } from "./../context/JwtContext";
 import Transition from "../utils/Transition";
-import { useJwt } from "../context/JwtContext";
 import JsonData from "../data/data.json";
+import axios from "axios";
 
-const ApprovedSwitch = () => {
+// Fungsi untuk Switch, not completed yet
+const ApproveSwitch = () => {
   const [isChecked, setIsChecked] = useState(false);
 
   const handleCheckboxChange = () => {
@@ -23,7 +24,7 @@ const ApprovedSwitch = () => {
           />
           <div
             className={`box block h-8 w-14 rounded-full ${
-              isChecked ? "bg-blue" : "bg-pink"
+              isChecked ? "bg-green-500" : "bg-red-500"
             }`}
           ></div>
           <div
@@ -37,42 +38,78 @@ const ApprovedSwitch = () => {
   );
 };
 
-function JsonDisplayData() {
-  const DisplayData = JsonData.map((info) => {
+// Fungsi untuk table FileAccess
+function FileAccessTable() {
+  const [data, setData] = useState([]);
+  // ini state loading, kalau dia bernilai true, berarti yang ditampilkan File Loading, kalau bernilai false yang timpalin hasil fetchnya
+  const [loading, setLoading] = useState(true);
+  const { decodedToken } = useJwt();
+  useEffect(() => {
+    const fetchData = async () =>{
+      try{
+        const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/getaccesslist`,{
+          decodedToken
+        }, {
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+          },
+        });
+        setData(response.data);
+        // ini set loading ke false
+        setLoading(false);
+      } catch (error){
+        // ini set loading ke false
+        setLoading(false);
+        alert('Error bang')
+      }
+     }
+
+     fetchData();
+  }, []);
+  
+
+  //fungsi display data
+  const DisplayData = data.map((info) => {
     return (
-      <tr>
-        <td className="bg-gray-50 px-8 py-4">
-          <button className="bg-red-600 hover:bg-red-800 py-1 px-1 rounded">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              className="fill-white"
-            >
-              <path d="M3 6v18h18v-18h-18zm5 14c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm4-18v2h-20v-2h5.711c.9 0 1.631-1.099 1.631-2h5.315c0 .901.73 2 1.631 2h5.712z" />
-            </svg>
-          </button>
-        </td>
-        <td className="bg-gray-50 px-8 py-4">{info.fileName}</td>
-        <td className="bg-gray-50 px-8 py-4">{info.path}</td>
-        <td className="bg-gray-50 px-8 py-4">{info.owner}</td>
-        <td className="bg-gray-50 px-8 py-4">{info.requester}</td>
-        <td className="bg-gray-50 px-8 py-4"><ApprovedSwitch/></td>
-        <td className="bg-gray-50 px-8 py-4">
-          <button className="bg-white py-1 px-1 rounded">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              className="fill-black"
-            >
-              <path d="M12 21l-8-9h6v-12h4v12h6l-8 9zm9-1v2h-18v-2h-2v4h22v-4h-2z" />
-            </svg>
-          </button>
-        </td>
-      </tr>
+      <>
+      <div> loading={loading}</div>
+        <tr>
+          <td className="bg-gray-50 px-8 py-4">
+            <button className="bg-red-600 hover:bg-red-800 py-1 px-1 rounded">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                className="fill-white"
+              >
+                <path d="M3 6v18h18v-18h-18zm5 14c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm4-18v2h-20v-2h5.711c.9 0 1.631-1.099 1.631-2h5.315c0 .901.73 2 1.631 2h5.712z" />
+              </svg>
+            </button>
+          </td>
+          <td className="bg-gray-50 px-8 py-4">{info.fileName}</td>
+          <td className="bg-gray-50 px-8 py-4">{info.path}</td>
+          <td className="bg-gray-50 px-8 py-4">{info.owner}</td>
+          <td className="bg-gray-50 px-8 py-4">{info.requester}</td>
+          <td className="bg-gray-50 px-8 py-4">
+            <ApproveSwitch />
+          </td>
+          <td className="bg-gray-50 px-8 py-4">
+            <button className="bg-white py-1 px-1 rounded">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                className="fill-black"
+              >
+                <path d="M12 21l-8-9h6v-12h4v12h6l-8 9zm9-1v2h-18v-2h-2v4h22v-4h-2z" />
+              </svg>
+            </button>
+          </td>
+        </tr>
+      </>
     );
   });
 
@@ -96,12 +133,11 @@ function JsonDisplayData() {
   );
 }
 
-function ModalFileAccess({ align }) {
-  const { decodedToken } = useJwt();
+function ModalFileAccess(loading) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-
   const trigger = useRef(null);
   const dropdown = useRef(null);
+  loading = loading;
 
   // close on click outside
   useEffect(() => {
@@ -140,7 +176,6 @@ function ModalFileAccess({ align }) {
         aria-expanded={dropdownOpen}
         aria-modal="true"
       >
-        <span className="sr-only">Need help?</span>
         <svg
           className="w-4 h-4"
           viewBox="0 0 24 24"
@@ -165,8 +200,8 @@ function ModalFileAccess({ align }) {
       >
         <div
           ref={dropdown}
-          onFocus={() => setDropdownOpen(true)}
-          onBlur={() => setDropdownOpen(false)}
+          // onFocus={() => setDropdownOpen(true)}
+          // onBlur={() => setDropdownOpen(false)}
         >
           <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
           <div className="fixed inset-0 z-10 w-screen overflow-y-auto overflow-x-">
@@ -181,7 +216,14 @@ function ModalFileAccess({ align }) {
                       >
                         File Access
                       </h3>
-                      <JsonDisplayData />
+                      <div>
+                        //ini logika untuk tampilin loading, kalau mau ga ribet hapus aja ganti jadi fileaccesstable aja
+                        {loading ? (
+                          <p>Loading...</p>
+                        ) :(
+                          <FileAccessTable/>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>

@@ -43,12 +43,12 @@ function FileAccessTable() {
   const [data, setData] = useState([]);
   // ini state loading, kalau dia bernilai true, berarti yang ditampilkan File Loading, kalau bernilai false yang timpalin hasil fetchnya
   const [loading, setLoading] = useState(true);
-  const { decodedToken } = useJwt();
+  const { jwt } = useJwt();
   useEffect(() => {
     const fetchData = async () =>{
       try{
         const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/getaccesslist`,{
-          decodedToken
+          jwt
         }, {
           headers: {
             "Content-Type": "application/json",
@@ -137,7 +137,7 @@ function ModalFileAccess(loading) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const trigger = useRef(null);
   const dropdown = useRef(null);
-  loading = loading;
+  loading = true;
 
   // close on click outside
   useEffect(() => {
@@ -217,7 +217,6 @@ function ModalFileAccess(loading) {
                         File Access
                       </h3>
                       <div>
-                        //ini logika untuk tampilin loading, kalau mau ga ribet hapus aja ganti jadi fileaccesstable aja
                         {loading ? (
                           <p>Loading...</p>
                         ) :(

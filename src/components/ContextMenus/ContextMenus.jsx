@@ -22,10 +22,13 @@ export default function ContextMenus() {
     async function onNewFile(name) {
         try {
             const path = generalPayload.currentPath + "\\" + name;
-            await createFile(path, jwt.jwt);
-            const newDirectoryContent = createDirectoryContent("File", name, path);
-            dispatch(addContent(newDirectoryContent));
-            dispatch(selectContentIdx(0)); // Select top item as content is added to the top.
+            if (await createFile(path, jwt.jwt) == "success") {
+                const newDirectoryContent = createDirectoryContent("File", name, path);
+                dispatch(addContent(newDirectoryContent));
+                dispatch(selectContentIdx(0)); // Select top item as content is added to the top.
+            } else {
+                alert("Invalid Authority")
+            }
         }
         catch (e) {
             alert(e);
@@ -34,10 +37,13 @@ export default function ContextMenus() {
     async function onNewFolder(name) {
         try {
             const path = generalPayload.currentPath + "\\" + name;
-            await createDirectory(path, jwt.jwt);
-            const newDirectoryContent = createDirectoryContent("Directory", name, path);
-            dispatch(addContent(newDirectoryContent));
-            dispatch(selectContentIdx(0)); // Select top item as content is added to the top.
+            if (await createDirectory(path, jwt.jwt) == "success") {
+                const newDirectoryContent = createDirectoryContent("Directory", name, path);
+                dispatch(addContent(newDirectoryContent));
+                dispatch(selectContentIdx(0)); // Select top item as content is added to the top.
+            } else {
+                alert("Invalid Authority")
+            }
         }
         catch (e) {
             alert(e);
@@ -48,11 +54,16 @@ export default function ContextMenus() {
             const path = removeFileNameFromPath(directoryEntityPayload.filePath);
             const oldPath = path + "\\" + directoryEntityPayload.fileName;
             const newPath = path + "\\" + newName;
-            await renameFile(oldPath, newPath, jwt.jwt);
-            const oldContent = createDirectoryContent(directoryEntityPayload.type, directoryEntityPayload.fileName, oldPath);
-            const newContent = createDirectoryContent(directoryEntityPayload.type, newName, newPath);
-            dispatch(renameContent([oldContent, newContent]));
-            dispatch(selectContentIdx(0)); // Select top item as content is added to the top.
+
+            if (await renameFile(oldPath, newPath, jwt.jwt) == "success") {
+                const oldContent = createDirectoryContent(directoryEntityPayload.type, directoryEntityPayload.fileName, oldPath);
+                const newContent = createDirectoryContent(directoryEntityPayload.type, newName, newPath);
+                dispatch(renameContent([oldContent, newContent]));
+                dispatch(selectContentIdx(0)); // Select top item as content is added to the top.
+            } else {
+                alert("Invalid Authority")
+            }
+
         }
         catch (e) {
             alert(e);
@@ -60,10 +71,12 @@ export default function ContextMenus() {
     }
     async function onDelete() {
         try {
-
-            await deleteFile(directoryEntityPayload.type, directoryEntityPayload.filePath, jwt.jwt);
-            const content = createDirectoryContent(directoryEntityPayload.type, directoryEntityPayload.fileName, directoryEntityPayload.filePath);
-            dispatch(deleteContent(content));
+            if (await deleteFile(directoryEntityPayload.type, directoryEntityPayload.filePath, jwt.jwt) == "success") {
+                const content = createDirectoryContent(directoryEntityPayload.type, directoryEntityPayload.fileName, directoryEntityPayload.filePath);
+                dispatch(deleteContent(content));
+            } else {
+                alert("Invalid Authority")
+            }
         }
         catch (e) {
             alert(e);
@@ -97,7 +110,14 @@ export default function ContextMenus() {
     async function onDownloadFile() {
         try {
             const content = await downloadFile(directoryEntityPayload.filePath, jwt.jwt);
-            content.name == "AxiosError" ? alert("Can't download folder") : fileDownload(content, directoryEntityPayload.fileName)
+          
+            if (content instanceof Blob) {
+                fileDownload(content, directoryEntityPayload.fileName)
+            } else if (content.response.status == "501") {
+                alert("Can't download folder")
+            } else if (content.response.status == "400") {
+                alert("Invalid Authority")
+            }
         } catch (e) {
             alert(e);
         }

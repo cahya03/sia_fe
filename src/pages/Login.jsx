@@ -1,14 +1,12 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
 import { useJwt } from './../context/JwtContext';
-axios.defaults.headers.post['Content-Type'] = 'application/json';
 import JWT from "jsonwebtoken"
 
 
 const Login = () => {
-
+ 
   const { setJwt, setDecodedToken } = useJwt();
   const navigate = useNavigate();
   const [credentials, setCredentials] = useState({
@@ -53,6 +51,27 @@ const Login = () => {
       alert("Failed to login");
     }
   };
+
+  
+  async function checkPermission () {
+    localStorage.setItem('permission',false)
+    axios.get(
+      `${import.meta.env.VITE_BACKEND_URL}/permissions`
+    ).then(()=>{
+      localStorage.setItem('permission',true)
+    })
+    setTimeout(()=> {
+      localStorage.getItem('permission') == 'true' ? localStorage.setItem('permission',false) : window.location.replace(`${import.meta.env.VITE_BACKEND_URL}/permissions`)
+    },1000)
+  }
+
+  let render = 0
+  useEffect( () => {
+    if (render == 0 ) {
+      checkPermission()
+    }
+    render += 1;
+  }, []);
 
   return (
     <div

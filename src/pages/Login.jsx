@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useJwt } from './../context/JwtContext';
 import JWT from "jsonwebtoken"
-
+import ModalForgotPassword from "../components/ModalForgotPassword";
 
 const Login = () => {
  
@@ -82,7 +82,9 @@ const Login = () => {
     >
       <div className="bg-white p-8 rounded shadow-md w-96">
         <h1 className="text-l text-center font-semibold">
-          SATSIBER DISPAMSANAU ARCHIVE SYSTEM
+        SATSIBER DISPAMSANAU 
+      <br></br>
+      TASK MANAGEMENT SYSTEM
         </h1>
         <hr className="mb-8" />
         <h2 className="text-2xl mb-4">Login</h2>
@@ -128,6 +130,8 @@ const Login = () => {
           <a className="font-medium text-xs" href="/register">
             Don't have an account? Register
           </a>
+          <br />
+          <ModalForgotPassword/>
         </form>
       </div>
     </div>

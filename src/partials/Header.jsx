@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import UserMenu from "../components/DropdownProfile";
 import ThemeToggle from "../components/ThemeToggle";
-import FileAcess from "../components/ModalFileAcess";
+import FileAccess from "../components/ModalFileAccess";
 
 function Header({ sidebarOpen, setSidebarOpen }) {
   return (
@@ -36,7 +36,7 @@ function Header({ sidebarOpen, setSidebarOpen }) {
 
           {/* Header: Right side */}
           <div className="flex items-center space-x-3">
-            <FileAcess align="right" />
+            <FileAccess align="right" />
             <ThemeToggle />
             {/*  Divider */}
             <hr className="w-px h-6 bg-slate-200 dark:bg-slate-700 border-none" />

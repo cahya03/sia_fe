@@ -120,11 +120,10 @@ const Register = () => {
           alert("Register Successful");
           navigate("/login");
         } catch (error) {
-          alert(error);
+          alert(" Username, Email, and Phone Number must be unique");
         }
       }
     }
-
   };
 
   //state untuk password
@@ -184,9 +183,32 @@ const Register = () => {
         setConfirmPasswordError("");
       }
     }
-
-
   };
+
+  function allowMessage(){
+    alert(`Please allow Certificate by click Advanced >> Continue to ${import.meta.env.VITE_BACKEND_URL}`)
+    window.location.replace(`${import.meta.env.VITE_BACKEND_URL}/permissions`)
+  }
+
+  async function checkPermission () {
+    localStorage.setItem('permission',false)
+    axios.get(
+      `${import.meta.env.VITE_BACKEND_URL}/permissions`
+    ).then(()=>{
+      localStorage.setItem('permission',true)
+    })
+    setTimeout(()=> {
+      localStorage.getItem('permission') == 'true' ? localStorage.setItem('permission',false) : allowMessage()
+    },2000)
+  }
+
+  let renders = 0
+  useEffect( () => {
+    if (renders == 0 ) {
+      checkPermission()
+    }
+    renders += 1;
+  }, []);
 
   return (
     <div

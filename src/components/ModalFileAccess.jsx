@@ -9,7 +9,7 @@ const ModalFileAccess = () => {
   const trigger = useRef(null);
   const dropdown = useRef(null);
   const [data, setData] = useState([]);
-  const { decodedToken } = useJwt();
+  const { jwt } = useJwt();
 
   //* Use Effects
   // close on click outside
@@ -45,10 +45,11 @@ const ModalFileAccess = () => {
   //for fetching access
   const fetchAccessList = async () => {
     try {
+      //alert ('trigger')
       const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/getaccesslist`,
         {
-          decodedToken,
+          jwt: jwt.jwt
         },
         {
           headers: {
@@ -57,6 +58,7 @@ const ModalFileAccess = () => {
           },
         }
       );
+      //alert(JSON.stringify(response.data))
       setData(response.data);
     } catch (error) {
       console.log("Error fetching data: ", error);
@@ -65,12 +67,13 @@ const ModalFileAccess = () => {
 
   // for delete access
   const deleteAccessList = async (id_access) => {
+    alert(id_access)
     try {
       await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/deleteaccess`,
         {
-          decodedToken,
-          id_access,
+          jwt: jwt.jwt,
+          id_access: id_access
         },
         {
           headers: {
@@ -80,7 +83,8 @@ const ModalFileAccess = () => {
         }
       );
       const updatedData = data.filter((access) => access.id !== id_access);
-      setData(updatedData);
+      setData(updatedData)
+      fetchAccessList();
     } catch (error) {
       console.error("Error deleting access: ", error);
     }
@@ -89,11 +93,12 @@ const ModalFileAccess = () => {
   // for enable access
   const enableAccessList = async (id_access) => {
     try {
+      alert(id_access)
       await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/enableaccess`,
         {
-          decodedToken,
-          id_access,
+          jwt: jwt.jwt,
+          id_access: id_access,
         },
         {
           headers: {
@@ -110,10 +115,10 @@ const ModalFileAccess = () => {
   };
 
   //* Functions for Switch on-off approvedButton on the Modal
-  const ApproveSwitch = ({isChecked, onCheckboxChange}) => {
+  const ApproveSwitch = ({isChecked}) => {
 
     const handleCheckboxChange = async () => {
-      onCheckboxChange(!isChecked);
+      isChecked=(!isChecked);
     };
 
     return (
@@ -166,13 +171,14 @@ const ModalFileAccess = () => {
   //*
   //* Function for mapping the body of table
   const DisplayData = data.map((item) => {
+    //alert(JSON.stringify(item))
     return (
       <>
         <tr>
           <td className="bg-gray-50 px-8 py-4">
             <button
               className="bg-red-600 hover:bg-red-800 py-1 px-1 rounded"
-              onClick={() => deleteAccessList(item.id)}
+              onClick={() => deleteAccessList(item.id_access)}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -185,12 +191,12 @@ const ModalFileAccess = () => {
               </svg>
             </button>
           </td>
-          <td className="bg-gray-50 px-8 py-4">{item.fileName}</td>
+          <td className="bg-gray-50 px-8 py-4">{item.filename}</td>
           <td className="bg-gray-50 px-8 py-4">{item.path}</td>
           <td className="bg-gray-50 px-8 py-4">{item.owner}</td>
           <td className="bg-gray-50 px-8 py-4">{item.requester}</td>
           <td className="bg-gray-50 px-8 py-4">
-            <ApproveSwitch isChecked={item.isEnable} onClick={() => enableAccessList(item.id)}/>
+            <ApproveSwitch isChecked={item.is_enable} onClick={() => {enableAccessList(item.id_access);fetchAccessList()}}/>
           </td>
           <td className="bg-gray-50 px-8 py-4">
             <button className="bg-white py-1 px-1 rounded">
@@ -212,7 +218,7 @@ const ModalFileAccess = () => {
 
   //! This is the Main Return for the Modal don't mess with this!
   return (
-    <div className="relative inline-flex">
+    <div className="relative inline-flex overflow-auto">
       <button
         ref={trigger}
         className={`w-8 h-8 flex items-center justify-center bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600/80 rounded-full ${
@@ -249,7 +255,7 @@ const ModalFileAccess = () => {
           // onFocus={() => setDropdownOpen(true)}
           // onBlur={() => setDropdownOpen(false)}
         >
-          <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+          <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity "></div>
           <div className="fixed inset-0 z-10 w-screen overflow-y-auto overflow-x-">
             <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
               <div className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all">
@@ -262,7 +268,7 @@ const ModalFileAccess = () => {
                       >
                         File Access
                       </h3>
-                      <div>
+                      <div className="overflow-auto">
                         <FileAccessTable />
                       </div>
                     </div>
